@@ -1,4 +1,5 @@
-import ServerError from '../lib/errors';
+import ServerError from '../lib/errors.js';
+import {userRepo} from '../lib/entities.js';
 
 export async function login(options) {
   // Implement your business logic here...
@@ -25,20 +26,18 @@ export async function login(options) {
 }
 
 export async function createUser(options) {
-  try {
-    const {username, email, password} = options.body.user
-  //  TODO validation
-  } catch {
-    throw new ServerError({
-      status:500,
-      error:'Malformed Request'
-    });
-  }
+  const {username, email, password} = options.body.user
+  console.log("s");
+  // TODO validation
 
-
+  const newUser = userRepo.createEntity({email, username})
+  await newUser.setHashedPass(password)
+  await userRepo.save(newUser)
 
   return {
-    status: 200,
-    data: 'createUser ok!'
+    status: 201,
+    data: {
+      email: newUser.email, token: newUser.token, username: newUser.username, bio: newUser.bio, image: newUser.image
+    }
   };
 }

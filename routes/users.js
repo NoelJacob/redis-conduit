@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import {login, createUser} from '../services/users';
+import {login, createUser} from '../services/users.js';
 
-const router = new Router();
+const router = Router();
 
 /**
  * Login for existing user

@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import * as profiles from '../services/profiles';
+import * as services from '../services/profiles.js';
 
-const router = new Router();
+const router = Router();
 
 /**
  * Get a profile of a user of the system. Auth is optional
@@ -12,7 +12,7 @@ router.get('/:username', async (req, res, next) => {
   };
 
   try {
-    const result = await profiles.getProfileByUsername(options);
+    const result = await services.getProfileByUsername(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -28,7 +28,7 @@ router.post('/:username/follow', async (req, res, next) => {
   };
 
   try {
-    const result = await profiles.followUserByUsername(options);
+    const result = await services.followUserByUsername(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -44,7 +44,7 @@ router.delete('/:username/follow', async (req, res, next) => {
   };
 
   try {
-    const result = await profiles.unfollowUserByUsername(options);
+    const result = await services.unfollowUserByUsername(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);

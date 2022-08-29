@@ -1,10 +1,10 @@
 import {Router} from 'express';
-import * as articles from '../services/articles';
+import * as services from '../services/articles.js';
 
-const router = new Router();
+const router = Router();
 
 /**
- * Get most recent articles from users you follow. Use query 
+ * Get most recent articles from users you follow. Use query
  * parameters to limit. Auth is required
  */
 router.get('/feed', async (req, res, next) => {
@@ -14,7 +14,7 @@ router.get('/feed', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.getArticlesFeed(options);
+    const result = await services.getArticlesFeed(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -22,7 +22,7 @@ router.get('/feed', async (req, res, next) => {
 });
 
 /**
- * Get most recent articles globally. Use query parameters to 
+ * Get most recent articles globally. Use query parameters to
  * filter results. Auth is optional
  */
 router.get('/', async (req, res, next) => {
@@ -35,7 +35,7 @@ router.get('/', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.getArticles(options);
+    const result = await services.getArticles(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -51,7 +51,7 @@ router.post('/', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.createArticle(options);
+    const result = await services.createArticle(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -67,7 +67,7 @@ router.get('/:slug', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.getArticle(options);
+    const result = await services.getArticle(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -84,7 +84,7 @@ router.put('/:slug', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.updateArticle(options);
+    const result = await services.updateArticle(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -100,7 +100,7 @@ router.delete('/:slug', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.deleteArticle(options);
+    const result = await services.deleteArticle(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -116,7 +116,7 @@ router.get('/:slug/comments', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.getArticleComments(options);
+    const result = await services.getArticleComments(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -133,7 +133,7 @@ router.post('/:slug/comments', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.createArticleComment(options);
+    const result = await services.createArticleComment(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -150,7 +150,7 @@ router.delete('/:slug/comments/:id', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.deleteArticleComment(options);
+    const result = await services.deleteArticleComment(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -166,7 +166,7 @@ router.post('/:slug/favorite', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.createArticleFavorite(options);
+    const result = await services.createArticleFavorite(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -182,7 +182,7 @@ router.delete('/:slug/favorite', async (req, res, next) => {
   };
 
   try {
-    const result = await articles.deleteArticleFavorite(options);
+    const result = await services.deleteArticleFavorite(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);

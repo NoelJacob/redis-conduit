@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import {getCurrentUser,updateCurrentUser} from '../services/user';
+import {getCurrentUser, updateCurrentUser} from '../services/user.js';
 
-const router = new Router();
+const router = Router();
 
 /**
  * Gets the currently logged-in user

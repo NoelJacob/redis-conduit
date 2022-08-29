@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import {getTags} from '../services/tags';
+import {getTags} from '../services/tags.js';
 
-const router = new Router();
+const router = Router();
 
 /**
  * Get tags. Auth not required
