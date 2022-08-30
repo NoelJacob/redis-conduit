@@ -3,12 +3,16 @@ import 'dotenv/config'
 import express from 'express'
 import cookieParser from 'cookie-parser';
 
+import {authMiddleware} from './lib/helpers.js';
+
 
 const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+
+app.all('*', authMiddleware)
 
 
 import articles from './routes/articles.js'
@@ -40,5 +44,4 @@ app.use((err, req, res, next) => {
   res.status(status).send({status, error: msg});
 });
 
-app.listen(8080)
-console.log("Server Started!");
+app.listen(8080, () => console.log("Server Started!"))

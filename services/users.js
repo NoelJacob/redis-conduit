@@ -1,5 +1,6 @@
-import ServerError from '../lib/errors.js';
+import {ServerError} from '../lib/helpers.js';
 import {userRepo} from '../lib/entities.js';
+import jwt from 'jsonwebtoken';
 
 export async function login(options) {
   // Implement your business logic here...
@@ -27,17 +28,18 @@ export async function login(options) {
 
 export async function createUser(options) {
   const {username, email, password} = options.body.user
-  console.log("s");
   // TODO validation
 
   const newUser = userRepo.createEntity({email, username})
   await newUser.setHashedPass(password)
   await userRepo.save(newUser)
 
+  const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn: '1800'})
+
   return {
     status: 201,
     data: {
-      email: newUser.email, token: newUser.token, username: newUser.username, bio: newUser.bio, image: newUser.image
+      email: email, token, username, bio: null, image: null
     }
   };
 }
