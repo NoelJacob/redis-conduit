@@ -4,7 +4,7 @@
   "description": "Redis backend for Conduit (Mother of all demo apps)",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon -q server.js",
     "test": "bash ./test/run-api-tests.sh"
   },
   "author": "Noel Jacob <noeljacob91@gmail.com> (https://noeljacob.me/)",

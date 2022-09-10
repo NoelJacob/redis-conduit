@@ -1,47 +1,36 @@
-export async function getCurrentUser(options) {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
+import {userRepo} from '../lib/entities.js'
+import {hash} from 'argon2';
+import { ServerError } from '../lib/helpers.js';
 
+export async function getCurrentUser(body) {
+  const result = await userRepo.fetch(body.id)
   return {
-    status: 200,
-    data: 'getCurrentUser ok!'
+    data: {user: result.user}
   };
 }
 
-export async function updateCurrentUser(options) {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
+export async function updateCurrentUser(body) {
+const result = await userRepo.fetch(body.id)
+const {email, username, bio, image, password} = body.user
+if(email) {
+  // const emailExists = await userRepo.search().where('email').eq(email).count()
+  // if(emailExists !== 0) throw new ServerError({
+  //   error: `Email ${email} exists`
+  // })
+  result.email = email
+}
+if(username) {
+  // const usernameExists = await userRepo.search().where('username').eq(username).count()
+  // if(usernameExists !== 0) throw new ServerError({
+  //   error: `Username ${username} exists`
+  // }) 
+  result.username = username
+}
+if(bio) result.bio = bio
+if(image) result.image = image
+if(password) result.hashedPass = await hash(password)
+await userRepo.save(result)
   return {
-    status: 200,
-    data: 'updateCurrentUser ok!'
+    data: {user: result.user}
   };
 }

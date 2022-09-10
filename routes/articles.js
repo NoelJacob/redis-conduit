@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import * as services from '../services/articles.js';
+import {optionalAuth, auth} from '../lib/helpers.js'
 
 const router = Router();
 
@@ -7,14 +8,14 @@ const router = Router();
  * Get most recent articles from users you follow. Use query
  * parameters to limit. Auth is required
  */
-router.get('/feed', async (req, res, next) => {
+router.get('/feed',auth, async (req, res, next) => {
   const options = {
     limit: req.query['limit'],
     offset: req.query['offset']
   };
 
   try {
-    const result = await services.getArticlesFeed(options);
+    const result = await services.getArticlesFeed(options, req.body);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -25,7 +26,7 @@ router.get('/feed', async (req, res, next) => {
  * Get most recent articles globally. Use query parameters to
  * filter results. Auth is optional
  */
-router.get('/', async (req, res, next) => {
+router.get('/', optionalAuth, async (req, res, next) => {
   const options = {
     tag: req.query['tag'],
     author: req.query['author'],
@@ -35,7 +36,7 @@ router.get('/', async (req, res, next) => {
   };
 
   try {
-    const result = await services.getArticles(options);
+    const result = await services.getArticles(options, req.body);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -45,13 +46,9 @@ router.get('/', async (req, res, next) => {
 /**
  * Create an article. Auth is required
  */
-router.post('/', async (req, res, next) => {
-  const options = {
-    body: req.body
-  };
-
+router.post('/', auth, async (req, res, next) => {
   try {
-    const result = await services.createArticle(options);
+    const result = await services.createArticle(req.body);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);

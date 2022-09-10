@@ -9,7 +9,7 @@ EMAIL=${EMAIL:-$USERNAME@mail.com}
 PASSWORD=${PASSWORD:-password}
 
 pnpx newman run $SCRIPTDIR/Conduit.postman_collection.json \
-  --delay-request 500 \
+  --delay-request 50 \
   --global-var "APIURL=$APIURL" \
   --global-var "USERNAME=$USERNAME" \
   --global-var "EMAIL=$EMAIL" \

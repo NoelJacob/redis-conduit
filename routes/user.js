@@ -1,17 +1,15 @@
 import {Router} from 'express';
 import {getCurrentUser, updateCurrentUser} from '../services/user.js';
+import { auth } from '../lib/helpers.js';
 
 const router = Router();
 
 /**
  * Gets the currently logged-in user
  */
-router.get('/', async (req, res, next) => {
-  const options = {
-  };
-
+router.get('/', auth, async (req, res, next) => {
   try {
-    const result = await getCurrentUser(options);
+    const result = await getCurrentUser(req.body);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -21,13 +19,9 @@ router.get('/', async (req, res, next) => {
 /**
  * Updated user information for current user
  */
-router.put('/', async (req, res, next) => {
-  const options = {
-    body: req.body
-  };
-
+router.put('/', auth, async (req, res, next) => {
   try {
-    const result = await updateCurrentUser(options);
+    const result = await updateCurrentUser(req.body);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);

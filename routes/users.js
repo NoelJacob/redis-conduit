@@ -7,12 +7,8 @@ const router = Router();
  * Login for existing user
  */
 router.post('/login', async (req, res, next) => {
-  const options = {
-    body: req.body
-  };
-
   try {
-    const result = await login(options);
+    const result = await login(req.body);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
@@ -23,12 +19,8 @@ router.post('/login', async (req, res, next) => {
  * Register a new user
  */
 router.post('/', async (req, res, next) => {
-  const options = {
-    body: req.body
-  };
-
   try {
-    const result = await createUser(options);
+    const result = await createUser(req.body);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
     next(err);
